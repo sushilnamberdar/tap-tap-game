@@ -1,13 +1,22 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BaseUrl } from '../../Utils/BaseUrl';
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   })
+  useEffect(()=> {
+    const user = Cookies.get('userInfo',{path:'/'});
+    if(user){
+      navigate('/');
+    }
+  },[])
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -16,21 +25,34 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${BaseUrl}/login`,formData);
-      console.log("response from the server ",response);
-      toast.success()
+      const response = await axios.post(`${BaseUrl}/login`, formData);
+      console.log("response from the server ", response);
+      toast.success(response.data.message);
+      const token = response.data.token
+      const email = response.data.user.email
+      const username = response.data.user.username
+
+      const userInfo = {token,email,username};
+      console.log(JSON.stringify(userInfo));
+      Cookies.set('userInfo', JSON.stringify(userInfo),{path:'/'},{ expires: 1 / 24 } ,{
+        secure: true,
+        sameSite: 'Strict'
+      })
+      navigate('/');
+      
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <div className="space-y-6 bg-gray-50 mt-20 ml-auto mr-auto p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+    <div className='flex items-center justify-center min-h-screen'>
+    <div className=" w-full  bg-gradient-to-b from-blue-400 via-pink-200 to-red-300  p-6 rounded-lg shadow-lg max-w-sm mx-auto">
       <form onSubmit={handleSubmit}>
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-semibold text-gray-700"
+            className="flex items-start text-sm font-semibold text-gray-700"
           >
             Email
           </label>
@@ -40,7 +62,7 @@ const LoginPage = () => {
             required
             onChange={handleChange}
             value={formData.email}
-            className="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full mt-2 p-3 border bg-transparent border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Enter your email"
           />
         </div>
@@ -68,6 +90,8 @@ const LoginPage = () => {
           Submit
         </button>
       </form>
+      <Link to={'/register'} className='text-blue-700 hover:underline'>Don't have an Account ? Sign Up</Link>
+    </div>
     </div>
   );
 
