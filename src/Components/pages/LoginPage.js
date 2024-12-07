@@ -4,6 +4,7 @@ import { BaseUrl } from '../../Utils/BaseUrl';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
+import bgimg from '../../assets/login-rigister-image.webp'
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -36,17 +37,19 @@ const LoginPage = () => {
       navigate('/home');
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message)
     }
   }
 
   return (
-    <div className='flex items-center justify-center min-h-screen'>
-    <div className=" w-full  bg-gradient-to-b from-blue-400 via-pink-200 to-red-300  p-6 rounded-lg shadow-lg max-w-sm mx-auto">
-      <form onSubmit={handleSubmit}>
+<div className='flex items-center justify-center min-h-screen bg-cover' style={{backgroundImage:`url(${bgimg})`}}>
+    <div className=" w-full bg-black/30  backdrop-blur-lg  border-2 border-black/20 p-6 rounded-lg   max-w-sm mx-auto">
+      <form onSubmit={handleSubmit} className='text-white'>
         <div>
+          <h1 className='text-4xl font-lighter'>Login</h1>
           <label
             htmlFor="email"
-            className="flex items-start text-sm font-semibold text-gray-700"
+            className="flex items-start text-sm font-semibold "
           >
             Email
           </label>
@@ -63,7 +66,7 @@ const LoginPage = () => {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-semibold text-gray-700"
+            className="flex items-start text-sm font-semibold"
           >
             Password
           </label>
@@ -73,7 +76,7 @@ const LoginPage = () => {
             required
             value={formData.password}
             onChange={handleChange}
-            className="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full mt-2 p-3 border bg-transparent border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Enter your password"
           />
         </div>
@@ -84,7 +87,7 @@ const LoginPage = () => {
           Submit
         </button>
       </form>
-      <Link to={'/register'} className='text-blue-700 hover:underline'>Don't have an Account ? Sign Up</Link>
+      <Link to={'/register'} className=' text-white/40 hover:underline'>Don't have an Account ? Sign Up</Link>
     </div>
     </div>
   );

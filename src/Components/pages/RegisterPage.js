@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { BaseUrl } from '../../Utils/BaseUrl';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import bgimg from '../../assets/login-rigister-image.webp'
 
 const RegisterPage = () => {
   const [formdata, setFormData] = useState({
@@ -29,14 +30,14 @@ const RegisterPage = () => {
     }
   }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100" style={{backgroundImage:`url(${bgimg})`,backgroundRepeat:'no-repeat', backgroundSize:'cover'}}>
+      <div className="w-full max-w-md bg-black/30 backdrop:blur-lg border-2 border-black/30 rounded-lg shadow-md p-6">
+        <h2 className="text-2xl text-white font-light text-center mb-6">Register</h2>
+        <form onSubmit={handleSubmit} className="space-y-4 text-white">
           <div>
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
+              className="flex items-start text-sm font-medium "
             >
               Username
             </label>
@@ -47,13 +48,13 @@ const RegisterPage = () => {
               onChange={handleChange}
               placeholder="Enter your username"
               required
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full mt-1 p-2 border  bg-transparent rounded-lg"
             />
           </div>
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="flex items-start text-sm font-medium "
             >
               Email
             </label>
@@ -64,13 +65,13 @@ const RegisterPage = () => {
               onChange={handleChange}
               placeholder="Enter your email"
               required
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full mt-1 p-2 border bg-transparent rounded-lg"
             />
           </div>
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="flex items-start text-sm font-medium "
             >
               Password
             </label>
@@ -81,7 +82,7 @@ const RegisterPage = () => {
               onChange={handleChange}
               placeholder="Enter your password"
               required
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full mt-1 p-2 border bg-transparent rounded-lg"
             />
           </div>
           <button
@@ -92,7 +93,7 @@ const RegisterPage = () => {
           </button>
 
         </form>
-        <Link to={'/login'} className='text-blue-500 hover:underline'> !Already have an account </Link>
+        <Link to={'/login'} className=' text-white/40 hover:underline'> !Already have an account </Link>
       </div>
     </div>
   );
