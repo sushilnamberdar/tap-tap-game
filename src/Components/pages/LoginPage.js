@@ -6,17 +6,21 @@ import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   })
-  useEffect(()=> {
-    const user = Cookies.get('userInfo',{path:'/'});
-    if(user){
-      navigate('/');
+  useEffect(() => {
+    // Check for the token in cookies when the component mounts
+    const token = Cookies.get('userauthToken');
+    console.log(token)
+    if (token) {
+      navigate('/home'); // Redirect to the home page
     }
-  },[])
-  const navigate = useNavigate();
+  }, [navigate]);
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -25,21 +29,11 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${BaseUrl}/login`, formData);
-      console.log("response from the server ", response);
-      toast.success(response.data.message);
-      const token = response.data.token
-      const email = response.data.user.email
-      const username = response.data.user.username
-
-      const userInfo = {token,email,username};
-      console.log(JSON.stringify(userInfo));
-      Cookies.set('userInfo', JSON.stringify(userInfo),{path:'/'},{ expires: 1 / 24 } ,{
-        secure: true,
-        sameSite: 'Strict'
-      })
-      navigate('/');
-      
+      const response = await axios.post(`${BaseUrl}/login`, formData,{
+        withCredentials:true
+      });
+      toast.success(response.data.message); 
+      navigate('/home');
     } catch (error) {
       console.log(error);
     }
